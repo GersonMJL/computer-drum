@@ -5,29 +5,40 @@
 import random
 
 
+# Função que gera uma sequência aleatória de bits
 def generate_random_sequence(number_of_bits: int):
+
+    # Inicializa uma lista vazia
     sequence = []
+
+    # Loop que gera um número aleatório de 0 a 1 para cada número de bits e adiciona na lista
     for i in range(number_of_bits):
         sequence.append(str(random.randint(0, 1)))
+
+    # Transforma a lista em uma string
     sequence = "".join(sequence)
+
+    # Verifica se a sequência gerada é válida e a retorna
     if sequence.count("0") == 7 and sequence.count("1") == 7:
         return sequence
+
+    # Caso não seja válida, chama a função novamente
     return generate_random_sequence(number_of_bits)
 
 
 def main():
+    # Gera uma sequência aleatória de 14 bits
     sequence = generate_random_sequence(14)
 
+    # Verifica se a sequência gerada é válida
     if len(sequence) != 14:
         print("Sequence must be 14 characters long.")
         return
 
-    if sequence.count("0") != 7 or sequence.count("1") != 7:
-        print("Sequence must contain 7 0's and 7 1's.")
-        return
-
-    # Create a list of all possible sequences of 4 digits of 0's and 1's inside sequence list
+    # Inicializa uma lista para armazenar as sequências de 4 bits
     sequences = []
+
+    # Loop que verifica se existe uma sequência de 4 bits duplicada
     for i in range(0, len(sequence)):
         j = i
         tmp_arr = []
@@ -37,14 +48,22 @@ def main():
         if tmp_arr not in sequences:
             sequences.append(tmp_arr)
 
+    # Se o tamanho da lista for diferente de 14 bits, significa que alguma sequência de 4 bits está duplicada
+    # e chama novamente a função até que todas as sequências sejam únicas
     if len(sequences) != 14:
         return main()
 
-    sequences.remove(["0", "0", "0", "0"])
-    sequences.remove(["1", "1", "1", "1"])
+    diff_array = [["0", "0", "0", "0"], ["1", "1", "1", "1"]]
 
-    for sequence in sequences:
-        print(sequence)
+    # Caso exista sequências 0000 e 1111, apague da lista
+    if diff_array[0] in sequences:
+        sequences.remove(["0", "0", "0", "0"])
+    if diff_array[1] in sequences:
+        sequences.remove(["1", "1", "1", "1"])
+
+    print(sequence)
+    for reading in sequences:
+        print(reading)
 
     return
 
